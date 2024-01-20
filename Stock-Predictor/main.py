@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import messagebox
 import time
@@ -11,13 +12,14 @@ import tensorflow
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import layers
+
 stock_entry = None
 second_stock_entry = None
 
 db = mysql.connector.connect(
-    host="host",
-    user="username",
-    password="db_passwd",
+    host=os.environ["MYSQL_HOST"],
+    user=os.environ["MYSQL_USER"],
+    password=os.environ["MYSQL_PASS"],
     database="stocks"
 )
 
@@ -25,6 +27,7 @@ cursor = db.cursor()
 def check_user_credentials(email, password):
     cursor.execute("SELECT * FROM test WHERE email = %s AND password = %s", (email, password))
     result = cursor.fetchone()
+
     return result is not None
 
 def login():
@@ -63,12 +66,6 @@ def open_stock_window(username):
         df = df[['Date', 'Close']]
         convert_date = df['Date']
 
-        def convert(x):
-            x = str(x).split()[0]
-            return x
-
-        converted_date = convert_date.apply(convert)
-        df['Date'] = converted_date
         def convert(x):
             x = str(x).split()[0]
             return x
@@ -348,11 +345,11 @@ def plot_stock_comparison(stock1, stock_info_1, predicted_1, stock2, stock_info_
 
     # Plotting stock values
     plt.plot(stock_info_1['Date'], stock_info_1['Close'], label=f'{stock1.upper()} Closing Price')
-    plt.scatter(stock_info_1['Date'].iloc[-1], stock_info_1['Close'].iloc[-1], color='red', marker='*', s=100,
+    plt.scatter(stock_info_1['Date'].iloc[-1], stock_info_1['Close'].iloc[-1], color='blue', marker='*', s=100,
                 label=f'Next Day Prediction for {stock1.upper()}')
 
     plt.plot(stock_info_2['Date'], stock_info_2['Close'], label=f'{stock2.upper()} Closing Price')
-    plt.scatter(stock_info_2['Date'].iloc[-1], stock_info_2['Close'].iloc[-1], color='blue', marker='*', s=100,
+    plt.scatter(stock_info_2['Date'].iloc[-1], stock_info_2['Close'].iloc[-1], color='red', marker='*', s=100,
                 label=f'Next Day Prediction for {stock2.upper()}')
 
     plt.title("Stock Price Comparison")
