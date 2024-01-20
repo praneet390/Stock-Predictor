@@ -1,0 +1,6 @@
+matplotlib==3.8.2
+mysql_connector_repackaged==0.3.1
+numpy==1.26.3
+pandas==2.2.0
+tensorflow==2.15.0.post1
+yfinance==0.2.35
