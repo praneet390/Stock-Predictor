@@ -10,7 +10,7 @@ Database changed
 MariaDB [stocks]> create table test(email varchar(255), password varchar(255));
 Query OK, 0 rows affected (0.153 sec)
 
-MariaDB [stocks]> insert into test values ("rehan", "hello1234") 
+MariaDB [stocks]> insert into test values ("user", "hello1234") 
 Query OK, 1 row affected (0.029 sec)
 ```
 
